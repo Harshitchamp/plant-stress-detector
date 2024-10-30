@@ -1,6 +1,6 @@
 Here’s a structured README file template for your "Plant Stress Detector" project on GitHub. It includes an overview, feature descriptions, setup instructions, and usage examples.
 
-🌱 **Plant Stress Detector**
+#🌱 [Plant Stress Detector](https://plant-stress-detector.netlify.app/)
 
 The Plant Stress Detector is a tool designed to help plant enthusiasts and gardeners monitor the health of their plants. By analyzing plant images and environmental data, this app provides insights into plant stress levels and offers tailored recommendations to improve plant care. It leverages image recognition for plant health and integrates various APIs to assess environmental factors.
 
@@ -19,6 +19,8 @@ The Plant Stress Detector is a tool designed to help plant enthusiasts and garde
 6.Contributing
 
 7.License
+## 🚀 Live Demo
+Experience the live version here:[Live Demo](https://plant-stress-detector.netlify.app/)
 
 ****🌟** Features******
 
