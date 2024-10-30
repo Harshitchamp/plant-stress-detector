@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Plant Care - Plant Stress Detector</title>
+    <style>
+        /* Light mode styles (default) */
+        :root {
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --section-bg-color: #fff;
+            --button-bg-color: #4CAF50;
+            --button-text-color: white;
+        }
+
+        /* Dark mode styles */
+        .dark-mode {
+            --background-color: #333;
+            --text-color: #f9f9f9;
+            --section-bg-color: #444;
+            --button-bg-color: #000d00;
+            --button-text-color: #f9f9f9;
+        }
+        
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: var(--background-color); 
+            padding: 20px; 
+            color: var(--text-color); 
+            position: relative;
+        }
+        h1, h2 { color: #4CAF50; }
+        .feature-section { margin-top: 20px; }
+        .button { 
+            padding: 10px; 
+            margin: 10px 0; 
+            background-color: var(--button-bg-color); 
+            color: var(--button-text-color); 
+            border: none; 
+            cursor: pointer; 
+        }
+        .button:hover { background-color: #45a049; }
+        input[type="file"], input[type="date"], input[type="month"], select, textarea { 
+            display: block; 
+            margin: 10px 0; 
+            width: 100%; 
+        }
+        .status-indicator { 
+            font-weight: bold; 
+            color: white; 
+            padding: 5px; 
+        }
+        .healthy { background-color: green; }
+        .mild-stress { background-color: yellow; color: black; }
+        .moderate-stress { background-color: orange; }
+        .severe-stress { background-color: red; }
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: auto;
+        }
+        .progress {
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 5px;
+            position: relative;
+            margin-top: 5px;
+        }
+        .progress .filler {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            position: absolute;
+        }
+        /* Table and Timeline styling */
+        .plant-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .plant-table th, .plant-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: var(--background-color); 
+            padding: 20px; 
+            color: var(--text-color); 
+            position: relative;
+        }
+        h1, h2 { color: #4CAF50; }
+        .feature-section { margin-top: 20px; }
+        .button { 
+            padding: 10px; 
+            margin: 10px 0; 
+            background-color: var(--button-bg-color); 
+            color: var(--button-text-color); 
+            border: none; 
+            cursor: pointer; 
+        }
+        .button:hover { background-color: #45a049; }
+        input[type="file"], input[type="date"], input[type="month"], select, textarea { 
+            display: block; 
+            margin: 10px 0; 
+            width: 100%; 
+        }
+        .recommendations, .health-status, .timeline, .thoughts, .activities, .plants { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin-top: 10px; 
+        }
+        .status-indicator { 
+            font-weight: bold; 
+            color: white; 
+            padding: 5px; 
+        }
+        .healthy { background-color: green; }
+        .mild-stress { background-color: yellow; color: black; }
+        .moderate-stress { background-color: orange; }
+        .severe-stress { background-color: red; }
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: auto;
+        }
+        .plant-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .plant-table th, .plant-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .progress {
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 5px;
+            position: relative;
+            margin-top: 5px;
+        }
+        .progress .filler {
+            height: 100%;
+            background-color: #4CAF50;
+            border-radius: 5px;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toggle Dark/Light Mode Button -->
+    <button class="button" onclick="toggleDarkMode()">Toggle Dark/Light Mode</button>
+
+    <!-- Logo -->
+    <img src="path/to/your/logo.jpeg" alt="Plant Care Logo" class="logo">
+
+    <h1>Plant Stress Detector</h1>
+
+    <!-- Image Recognition and Analysis -->
+    <div class="feature-section" id="imageRecognition">
+        <h2>Plant Image Recognition</h2>
+        <p>Snap or upload a photo of your plant to detect signs of stress like leaf discoloration, wilting, or browning.</p>
+        <input type="file" id="plantImage" accept="image/*">
+        <button class="button" onclick="analyzePlantImage()">Analyze Plant</button>
+        <p id="analysisResult">Awaiting image analysis...</p>
+    </div>
+
+    <!-- Environmental Context Integration -->
+    <div class="feature-section" id="environmentIntegration">
+        <h2>Environmental Context</h2>
+        <p>Based on recent environmental data, we assess if temperature, humidity, or lighting may be causing plant stress.</p>
+        <button class="button" onclick="fetchEnvironmentalData()">Fetch Environmental Data</button>
+        <div id="environmentData">
+            <p>Temperature: <span id="temperature">N/A</span></p>
+            <p>Humidity: <span id="humidity">N/A</span></p>
+            <p>Light Exposure: <span id="lightExposure">N/A</span></p>
+        </div>
+    </div>
+
+    <!-- Stress Analysis and Alerts -->
+    <div class="feature-section" id="stressAnalysis">
+        <h2>Stress Analysis and Alerts</h2>
+        <p>Health Status Indicator based on analysis:</p>
+        <div id="healthStatus" class="health-status">
+            <p>Current Health Status: <span class="status-indicator healthy" id="statusIndicator">Healthy</span></p>
+        </div>
+        <div id="recoveryTimeline">
+            <p>Estimated Days to Being Healthy: <span id="daysToHealthy">N/A</span></p>
+            <div class="progress" id="healthProgress">
+                <div class="filler" id="progressFiller" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+     
+
+    <!-- Personalized Recommendations -->
+    <div class="feature-section" id="recommendations">
+        <h2>Personalized Recommendations</h2>
+        <p>Suggested actions based on detected issues:</p>
+        <ul id="recommendationsList">
+            <li>Maintain regular watering schedule.</li>
+            <li>Ensure adequate light exposure.</li>
+        </ul>
+    </div>
+
+    <!-- Health Dashboard -->
+    <div class="feature-section" id="healthDashboard">
+        <h2>Plant Health Dashboard</h2>
+        <table class="plant-table">
+            <thead>
+                <tr>
+                    <th>Plant Name</th>
+                    <th>Stress Level</th>
+                    <th>Days to Being Healthy</th>
+                    <th>Last Checked</th>
+                    <th>Care Recommendations</th>
+                </tr>
+            </thead>
+            <tbody id="plantHealthEntries">
+                <tr>
+                    <td>Monstera</td>
+                    <td>Moderate</td>
+                    <td>7</td>
+                    <td>Oct 30</td>
+                    <td>Water & increase light</td>
+                </tr>
+                <tr>
+                    <td>Snake Plant</td>
+                    <td>Mild</td>
+                    <td>3</td>
+                    <td>Oct 30</td>
+                    <td>No immediate action needed</td>
+                </tr>
+                <tr>
+                    <td>Fiddle Leaf Fig</td>
+                    <td>Severe</td>
+                    <td>14</td>
+                    <td>Oct 30</td>
+                    <td>Water & check for pests</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Seasonal Care Recommendations -->
+    <div class="feature-section" id="seasonalCare">
+        <h2>Seasonal Care Recommendations</h2>
+        <select id="seasonSelect">
+            <option value="spring">Spring</option>
+            <option value="summer">Summer</option>
+            <option value="fall">Fall</option>
+            <option value="winter">Winter</option>
+        </select>
+        <button class="button" onclick="getSeasonalCare()">Get Recommendations</button>
+        <p id="seasonalCareResult">Seasonal care tips will appear here...</p>
+    </div>
+
+    <!-- Calendar and Date Selection -->
+    <div class="feature-section" id="calendarSection">
+        <h2>Select Date for Plant Care Activity</h2>
+        <label for="datePicker">Choose a date:</label>
+        <input type="date" id="datePicker">
+        
+        <label for="monthPicker">Choose a month:</label>
+        <input type="month" id="monthPicker">
+        
+        <label for="yearPicker">Choose a year:</label>
+        <select id="yearPicker">
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+        </select>
+        <button class="button" onclick="submitDate()">Submit Date</button>
+        <p id="selectedDateResult">No date selected.</p>
+    </div>
+     
+     <!-- Soil Health Analyzer -->
+     <div class="feature-section" id="soilHealthAnalyzer">
+        <h2>Soil Health Analyzer</h2>
+        <p>Input soil characteristics or upload a photo for analysis.</p>
+        <input type="file" id="soilImage" accept="image/*">
+        <button class="button" onclick="analyzeSoil()">Analyze Soil</button>
+        <p id="soilResult">Soil analysis will appear here...</p>
+    </div>
+
+    <!-- Growth Tracker and Visual Timeline -->
+    <div class="feature-section" id="growthTracker">
+        <h2>Growth Tracker and Visual Timeline</h2>
+        <p>Upload periodic photos to track your plant's growth.</p>
+        <input type="file" id="growthImage" accept="image/*">
+        <button class="button" onclick="trackGrowth()">Upload Photo</button>
+        <div id="growthTimeline">Timeline: No photos uploaded yet.</div>
+    </div>
+
+    <!-- Environmental Impact Tracker -->
+    <div class="feature-section" id="environmentalImpactTracker">
+        <h2>Environmental Impact Tracker</h2>
+        <p>Discover your plant's air purification and carbon offset impact.</p>
+        <button class="button" onclick="calculateImpact()">Calculate Impact</button>
+        <p id="impactResult">Impact results will appear here...</p>
+    </div>
+
+    <!-- Virtual Plant Doctor -->
+    <div class="feature-section" id="virtualPlantDoctor">
+        <h2>Virtual Plant Doctor</h2>
+        <p>Ask questions about specific plant issues.</p>
+        <textarea id="doctorQuery" rows="4" placeholder="Describe your plant issue here..."></textarea>
+        <button class="button" onclick="askPlantDoctor()">Ask Plant Doctor</button>
+        <p id="doctorResult">Doctor's advice will appear here...</p>
+    </div>
+
+    <!-- Plant Species Identifier -->
+    <div class="feature-section" id="plantSpeciesIdentifier">
+        <h2>Plant Species Identifier</h2>
+        <p>Upload a plant photo to identify its species and care needs.</p>
+        <input type="file" id="speciesImage" accept="image/*">
+        <button class="button" onclick="identifyPlant()">Identify Plant</button>
+        <p id="speciesResult">Plant species identification will appear here...</p>
+    </div>
+
+
+    
+
+    <!-- Plant Related Activities -->
+    <div class="feature-section activities" id="plantActivities">
+        <h2>Plant Care Activities</h2>
+        <p>Here are some activities you can do based on the current weather:</p>
+        <ul id="activityList">
+            <li>Check soil moisture levels.</li>
+            <li>Prune dead leaves or stems.</li>
+            <li>Repot if needed.</li>
+        </ul>
+    </div>
+
+    <!-- Plant Benefits Section -->
+    <div class="feature-section plants" id="plantBenefits">
+        <h2>Plant Benefits</h2>
+        <label for="plantSelect">Select a plant:</label>
+        <select id="plantSelect" onchange="displayPlantBenefits()">
+            <option value="">Select a plant</option>
+            <option value="Aloe Vera">Aloe Vera</option>
+            <option value="Basil">Basil</option>
+            <option value="Spider Plant">Spider Plant</option>
+            <option value="Snake Plant">Snake Plant</option>
+            <option value="Fern">Fern</option>
+        </select>
+        <p>Benefits: <span id="plantBenefitsText"></span></p>
+    </div>
+    <!-- Share Your Thoughts Section -->
+    <div class="feature-section thoughts" id="shareThoughts">
+        <h2>Share Your Thoughts</h2>
+        <p>We'd love to hear from you! Share your plant care tips, experiences, or feedback:</p>
+        <textarea id="thoughtsInput" rows="4" placeholder="Write your thoughts here..."></textarea>
+        <button class="button" onclick="submitThoughts()">Submit Thoughts</button>
+        <p id="thoughtsResult">Your thoughts will appear here.</p>
+    </div>
+
+    <script>
+        // Toggle Dark/Light Mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        // 1. Analyze Plant Image
+        function analyzePlantImage() {
+            const imageInput = document.getElementById('plantImage');
+            if (imageInput.files.length > 0) {
+                const file = imageInput.files[0];
+                // Simulating analysis process
+                setTimeout(() => {
+                    // Simulated stress level
+                    const stressLevel = "Moderate"; // For example
+                    document.getElementById('analysisResult').innerText = `Stress Level Detected: ${stressLevel}`;
+                    
+                    // Update health status
+                    document.getElementById('statusIndicator').innerText = stressLevel;
+                    document.getElementById('statusIndicator').className = `status-indicator ${stressLevel.toLowerCase().replace(' ', '-')}`;
+                    const daysToHealthy = getEstimatedRecoveryDays(stressLevel);
+                    document.getElementById('daysToHealthy').innerText = daysToHealthy;
+                    updateProgress(daysToHealthy);
+                    updateRecommendations(stressLevel);
+                }, 2000);
+            } else {
+                document.getElementById('analysisResult').innerText = "Please upload an image.";
+            }
+        }
+
+        // 2. Fetch Environmental Data
+        function fetchEnvironmentalData() {
+            // Simulated data fetching
+            setTimeout(() => {
+                document.getElementById('temperature').innerText = "25°C";
+                document.getElementById('humidity').innerText = "60%";
+                document.getElementById('lightExposure').innerText = "Bright, indirect sunlight";
+            }, 1000);
+        }
+
+        // 3. Estimated Recovery Days Based on Stress Level
+        function getEstimatedRecoveryDays(stressLevel) {
+            switch (stressLevel) {
+                case "Mild":
+                    return "3-5";
+                case "Moderate":
+                    return "7-10";
+                case "Severe":
+                    return "14-21";
+                default:
+                    return "N/A";
+            }
+        }
+
+        // 4. Update Recommendations
+        function updateRecommendations(stressLevel) {
+            const recommendations = {
+                "Mild": ["Increase light exposure.", "Check watering schedule."],
+                "Moderate": ["Consider nutrient treatment.", "Increase humidity."],
+                "Severe": ["Check for pests.", "Repot if rootbound.", "Adjust watering schedule."]
+            };
+            const list = document.getElementById('recommendationsList');
+            list.innerHTML = ""; // Clear current recommendations
+            recommendations[stressLevel].forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                list.appendChild(li);
+            });
+        }
+
+        // 5. Update Progress
+        function updateProgress(days) {
+            const totalDays = parseInt(days.split('-')[0]) || 0;
+            const progress = Math.max(0, Math.min(100, (100 - (totalDays * 7) / 14) * 100)); // Example calculation
+            document.getElementById('progressFiller').style.width = progress + '%';
+        }
+
+        // 6. Submit Date for Plant Care Activity
+        function submitDate() {
+            const date = document.getElementById('datePicker').value;
+            const month = document.getElementById('monthPicker').value;
+            const year = document.getElementById('yearPicker').value;
+            const result = `Selected Date: ${date} ${month} ${year}`;
+            document.getElementById('selectedDateResult').innerText = result;
+        }
+
+        // 7. Share Your Thoughts
+        function submitThoughts() {
+            const thoughts = document.getElementById('thoughtsInput').value;
+            if (thoughts) {
+                document.getElementById('thoughtsResult').innerText = `Your thoughts: "${thoughts}" submitted!`;
+                document.getElementById('thoughtsInput').value = ''; // Clear input
+            }
+        }
+
+        // 8. Display Plant Benefits
+        function displayPlantBenefits() {
+            const plant = document.getElementById('plantSelect').value;
+            const benefits = {
+                "Aloe Vera": "Great for skin care and burns.",
+                "Basil": "Used in cooking and has medicinal properties.",
+                "Spider Plant": "Excellent air purifier.",
+                "Snake Plant": "Releases oxygen at night.",
+                "Fern": "Good for humidity control."
+            };
+            document.getElementById('plantBenefitsText').innerText = plant ? benefits[plant] : '';
+        }
+         // Seasonal Care Recommendations
+         function getSeasonalCare() {
+            const season = document.getElementById('seasonSelect').value;
+            document.getElementById('seasonalCareResult').innerText = `Getting recommendations for ${season}...`;
+            setTimeout(() => {
+                document.getElementById('seasonalCareResult').innerText = `For ${season}, reduce watering and increase sunlight exposure.`;
+            }, 1000);
+        }
+        // Plant Health Tracker
+        function checkPlantHealth() {
+            const healthImage = document.getElementById('healthImage');
+            if (healthImage.files.length > 0) {
+                document.getElementById('healthResult').innerText = "Analyzing plant health...";
+                setTimeout(() => {
+                    document.getElementById('healthResult').innerText = "Plant health is optimal. No stress detected.";
+                }, 2000);
+            } else {
+                document.getElementById('healthResult').innerText = "Please upload an image.";
+            }
+        }
+        // Soil Health Analyzer
+        function analyzeSoil() {
+            const soilImage = document.getElementById('soilImage');
+            if (soilImage.files.length > 0) {
+                document.getElementById('soilResult').innerText = "Analyzing soil...";
+                setTimeout(() => {
+                    document.getElementById('soilResult').innerText = "Soil is optimal for most plants. pH level: 6.5.";
+                }, 2000);
+            } else {
+                document.getElementById('soilResult').innerText = "Please upload a soil image.";
+            }
+        }
+
+        // Growth Tracker and Visual Timeline
+        function trackGrowth() {
+            const growthImage = document.getElementById('growthImage');
+            if (growthImage.files.length > 0) {
+                document.getElementById('growthTimeline').innerText = "Photo uploaded. Timeline updated!";
+            }
+        }
+
+        // Environmental Impact Tracker
+        function calculateImpact() {
+            document.getElementById('impactResult').innerText = "Calculating impact...";
+            setTimeout(() => {
+                document.getElementById('impactResult').innerText = "This plant offsets approximately 5 grams of CO2 per day.";
+            }, 1000);
+        }
+
+        // Virtual Plant Doctor
+        function askPlantDoctor() {
+            const query = document.getElementById('doctorQuery').value;
+            if (query) {
+                document.getElementById('doctorResult').innerText = "Processing your question...";
+                setTimeout(() => {
+                    document.getElementById('doctorResult').innerText = "Try adjusting light exposure and watering frequency.";
+                }, 2000);
+            } else {
+                document.getElementById('doctorResult').innerText = "Please enter a question.";
+            }
+        }
+
+        // Plant Species Identifier
+        function identifyPlant() {
+            const speciesImage = document.getElementById('speciesImage');
+            if (speciesImage.files.length > 0) {
+                document.getElementById('speciesResult').innerText = "Identifying plant...";
+                setTimeout(() => {
+                    document.getElementById('speciesResult').innerText = "This is likely a Fiddle Leaf Fig. Needs bright, indirect light.";
+                }, 2000);
+            } else {
+                document.getElementById('speciesResult').innerText = "Please upload a plant image.";
+            }
+        }
+
+    </script>
+</body>
+</html>
